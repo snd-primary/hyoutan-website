@@ -43,41 +43,6 @@ import { SAKE_SLIDE_IMGS } from "@/data/slides";
     const animation = slider.animate(keyframes, options);
 
     animation.play();
-
-    /*     const slideCount = slides.length;
-    let slideIndex = 0;
-    let autoSlideInterval; */
-
-    /*     slider.insertBefore(slides[slideCount - 1].cloneNode(true), slides[0]);
-
-    slider.appendChild(slides[1].cloneNode(true));
-
-    const updateSliderPosition = () => {
-      slider.style.transform = `translateX(${-slideIndex * 10}%)`;
-    };
-
-    const nextSlide = () => {
-      slideIndex++;
-      updateSliderPosition();
-
-      if (slideIndex === slideCount + 1) {
-        setTimeout(() => {
-          slider.style.transition = "none";
-          slideIndex = 1;
-
-          updateSliderPosition();
-          setTimeout(() => {
-            slider.style.transition = "transform 0.5s ease-in-out";
-          }, 10);
-        }, 500);
-      }
-    };
-
-    const startAutoSlide = () => {
-      autoSlideInterval = setInterval(nextSlide, 00);
-    };
-    startAutoSlide();
-    slider.addEventListener("mouseenter", startAutoSlide) */
   }
   window.addEventListener("DOMContentLoaded", init);
 </script>
