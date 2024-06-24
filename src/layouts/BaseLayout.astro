@@ -1,0 +1,45 @@
+---
+//web fonts
+import "@fontsource/zen-maru-gothic/300.css";
+import "@fontsource/zen-maru-gothic/400.css";
+import "@fontsource/zen-maru-gothic/700.css";
+
+import classNames from "classnames";
+
+//panda css
+import "../styles/global.css";
+import { css } from "@styled-system/css";
+import { vstack } from "@styled-system/patterns";
+
+//components
+import Meta from "@/components/Meta.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+---
+
+<html lang="ja">
+  <Meta />
+  <body
+    class={vstack({
+      height: "100svh",
+      gap: "2",
+      position: "relative",
+    })}
+  >
+    <Header />
+    <main
+      class={classNames(
+        css({
+          border: "1px solid red",
+          width: "100%",
+          maxWidth: "breakpoint-2xl",
+        }),
+        vstack({ gap: "2", justifyContent: "center", alignItems: "start" }),
+      )}
+    >
+      <slot />
+    </main>
+    <Footer />
+    <div></div>
+  </body>
+</html>

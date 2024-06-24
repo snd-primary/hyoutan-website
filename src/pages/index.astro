@@ -1,16 +1,147 @@
 ---
-import { css } from "../../styled-system/css";
+import classNames from "classnames";
+
+//panda css
+import { css } from "@styled-system/css";
+import { vstack } from "@styled-system/patterns";
+
+//components
+import Logo from "@/components/svg/Logo.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+//images
+import { Image } from "astro:assets";
+import hyoutan_typography from "@/assets/hyoutan_typography.png";
+import AstroImage from "@/components/SakeSlide/AstroImage.astro";
+
+import { SAKE_SLIDE_IMGS } from "@/data/slides";
 ---
 
-<html lang="ja">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Astro</title>
-  </head>
-  <body>
-    <h1>Astro</h1>
-  </body>
-</html>
+<script>
+  function init() {
+    const slider = document.querySelector("[data-slider]") as HTMLElement;
+    const slides = Array.from(slider.querySelectorAll("img"));
+
+    slides.forEach((slide) => {
+      const clone = slide.cloneNode(true);
+      slider.appendChild(clone);
+    });
+
+    const totalDuration = slides.length * 40000;
+
+    const keyframes = [
+      { transform: `translateX(0)` },
+      { transform: `translateX(-${slides.length * 100}%)` },
+    ];
+
+    const options = {
+      duration: totalDuration,
+      iterations: Infinity,
+      easing: "linear",
+    };
+
+    const animation = slider.animate(keyframes, options);
+
+    animation.play();
+
+    /*     const slideCount = slides.length;
+    let slideIndex = 0;
+    let autoSlideInterval; */
+
+    /*     slider.insertBefore(slides[slideCount - 1].cloneNode(true), slides[0]);
+
+    slider.appendChild(slides[1].cloneNode(true));
+
+    const updateSliderPosition = () => {
+      slider.style.transform = `translateX(${-slideIndex * 10}%)`;
+    };
+
+    const nextSlide = () => {
+      slideIndex++;
+      updateSliderPosition();
+
+      if (slideIndex === slideCount + 1) {
+        setTimeout(() => {
+          slider.style.transition = "none";
+          slideIndex = 1;
+
+          updateSliderPosition();
+          setTimeout(() => {
+            slider.style.transition = "transform 0.5s ease-in-out";
+          }, 10);
+        }, 500);
+      }
+    };
+
+    const startAutoSlide = () => {
+      autoSlideInterval = setInterval(nextSlide, 00);
+    };
+    startAutoSlide();
+    slider.addEventListener("mouseenter", startAutoSlide) */
+  }
+  window.addEventListener("DOMContentLoaded", init);
+</script>
+<BaseLayout>
+  <!-- heroview -->
+  <section
+    class={vstack({
+      gap: 4,
+      alignItems: "center",
+      justifyContent: "center",
+      w: "100%",
+      h: "100svh",
+    })}
+  >
+    <Image src={hyoutan_typography} alt={"三代目ひょうたん"} width={800} />
+    <div class={css({})}>
+      <Logo scale={1} />
+    </div>
+  </section>
+
+  <!-- concept -->
+  <section>
+    <h2
+      class={css({
+        fontWeight: "bold",
+        fontSize: { base: "x-large", lg: "xx-large" },
+      })}
+    >
+      全国から取り寄せた希少な日本酒と、うまい肴を楽しむ。
+    </h2>
+    <p>
+      男が地蔵峠を通ると、お地蔵様の頭の上に雪が積もっていたので雪を払ってあげた。大晦日の夕方、町についた男はそこでかせ玉を売るが、一向に売れない。と、そこに笠売りのおじいさんがやってきた。笠売りのおじいさんもまったく笠が売れないので、二人はそれぞれの売り物を交換することにして家路についた。
+    </p>
+    <div
+      class={css({
+        display: "flex",
+        justifyContent: "center",
+        margin: "0 auto",
+        gap: 4,
+        width: "100%",
+        overflow: "hidden",
+        height: "380px",
+      })}
+      data-slider-container
+    >
+      <div
+        class={css({
+          display: "flex",
+          transition: "transform 0.5s ease-in-out",
+          gap: 0,
+        })}
+        data-slider
+      >
+        {
+          SAKE_SLIDE_IMGS.map((img) => (
+            <AstroImage
+              imagePath={`/src/assets/sake_slide/${img.src}`}
+              altText="aaaa"
+              name="AstroImage"
+              data-slider-item
+            />
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,40 @@
+---
+import { css } from "@styled-system/css";
+import Logo from "./svg/Logo.astro";
+import { NAVLINKS } from "@/site.config";
+---
+
+<header
+  class={css({
+    background: "foreground",
+    width: "100%",
+    padding: 10,
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    position: "sticky",
+    top: 0,
+    left: 0,
+    zIndex: 5,
+  })}
+>
+  <a href="/">
+    <Logo scale={0.2} />
+  </a>
+  <nav role="navigation">
+    <ul class={css({ display: "flex", flexDirection: "row", gap: 15 })}>
+      <li>
+        <a href={NAVLINKS.concept}>コンセプト</a>
+      </li>
+      <li>
+        <a>お品書き</a>
+      </li>
+      <li>
+        <a>ご予約</a>
+      </li>
+      <li>
+        <a>アクセス</a>
+      </li>
+    </ul>
+  </nav>
+</header>
