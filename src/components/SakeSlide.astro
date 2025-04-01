@@ -1,0 +1,77 @@
+---
+import { SAKE_SLIDE_IMGS } from "@/data/slides";
+import { css } from "@styled-system/css";
+import type { ImageMetadata } from "astro";
+import { Image } from "astro:assets";
+
+const images = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/sake_slide/*.jpg",
+);
+---
+
+<script>
+  function sakeSlider() {
+    const slider = document.querySelector("[data-slider]") as HTMLElement;
+    const slides = Array.from(slider.querySelectorAll("img"));
+
+    for (const slide of slides) {
+      const clone = slide.cloneNode(true);
+      slider.appendChild(clone);
+    }
+
+    const totalDuration = slides.length * 18000;
+
+    const keyframes = [
+      { transform: `translateX(0)` },
+      { transform: `translateX(-${slides.length * 100}%)` },
+    ];
+
+    const options = {
+      duration: totalDuration,
+      iterations: Infinity,
+      easing: "linear",
+    };
+
+    function startAnimation() {
+      const animation = slider.animate(keyframes, options);
+      animation.onfinish = () => {
+        slider.style.transform = "translateX(0)";
+        startAnimation();
+      };
+    }
+    startAnimation();
+  }
+  window.addEventListener("DOMContentLoaded", sakeSlider);
+</script>
+<div
+  class={css({
+    display: "flex",
+    justifyContent: "center",
+    margin: "0 auto",
+    gap: 4,
+    width: "100%",
+    overflow: "hidden",
+    height: "380px",
+  })}
+  data-slider-container
+>
+  <div
+    class={css({
+      display: "flex",
+      transition: "transform 0.5s ease-in-out",
+      gap: 0,
+    })}
+    data-slider
+  >
+    {
+      SAKE_SLIDE_IMGS.map((img) => (
+        <Image
+          src={images[`/src/assets/sake_slide/${img.src}`]()}
+          alt={"s"}
+          loading={"eager"}
+          data-slider-item
+        />
+      ))
+    }
+  </div>
+</div>

@@ -2,27 +2,107 @@
 import { css } from "@styled-system/css";
 import Logo from "./svg/Logo.astro";
 import { NAVLINKS } from "@/site.config";
+
+const header = css({
+  width: "100%",
+  background: "background",
+  position: "sticky",
+  top: 0,
+  left: 0,
+  zIndex: 2,
+});
+
+const nav = css({
+  background: "background",
+  borderBottom: "1px solid red",
+  width: "100%",
+  padding: 10,
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  position: "sticky",
+  top: 0,
+  left: 0,
+  zIndex: 2,
+});
+
+const vline = css({
+  width: "100%",
+  height: 4,
+  background: "foreground",
+  borderRadius: "24px",
+});
+
+const hamburger = css({
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "space-around",
+  width: 30,
+  height: 30,
+  zIndex: 2,
+});
+
+const srOnly = css({
+  position: "absolute",
+  width: 1,
+  height: 1,
+  padding: 0,
+  margin: -1,
+  overflow: "hidden",
+  clip: "rect(0, 0, 0, 0)",
+  whiteSpace: "nowrap",
+  borderWidth: 0,
+});
+
+const navLinks = css({
+  display: "none",
+  flexDirection: "row",
+  gap: 15,
+  position: "absolute",
+  top: "0",
+  left: "0",
+  zIndex: 1,
+  width: "100%",
+  height: "100svh",
+  background: "background",
+});
 ---
 
-<header
-  class={css({
-    background: "foreground",
-    width: "100%",
-    padding: 10,
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    position: "sticky",
-    top: 0,
-    left: 0,
-    zIndex: 5,
-  })}
->
-  <a href="/">
-    <Logo scale={0.2} />
-  </a>
-  <nav role="navigation">
-    <ul class={css({ display: "flex", flexDirection: "row", gap: 15 })}>
+<script>
+  const hamburger = document.querySelector(
+    "[data-hamburger]",
+  ) as HTMLButtonElement;
+  const navLinks = document.querySelector(
+    "[data-navLinks]",
+  ) as HTMLUListElement;
+
+  hamburger.addEventListener("click", () => {
+    navLinks.style.display =
+      navLinks.style.display === "none" ? "flex" : "none";
+    const isExpanded = hamburger.getAttribute("aria-expanded") === "true";
+    hamburger.setAttribute("aria-expanded", String(!isExpanded));
+  });
+</script>
+
+<header class={header}>
+  <nav role="navigation" class={nav}>
+    <a href="/">
+      <Logo scale={0.2} />
+    </a>
+    <button
+      class={hamburger}
+      aria-label="メニューを開く"
+      aria-expandes="false"
+      aria-controls="nav-menu"
+      data-hamburger
+    >
+      <span class={srOnly}>メニュー</span>
+      <span class={vline}></span>
+      <span class={vline}></span>
+      <span class={vline}></span>
+    </button>
+
+    <ul class={navLinks} role="menu" data-navLinks>
       <li>
         <a href={NAVLINKS.concept}>コンセプト</a>
       </li>

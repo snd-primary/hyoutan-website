@@ -1,9 +1,11 @@
 ---
-import classNames from "classnames";
-
 //panda css
 import { css } from "@styled-system/css";
 import { vstack } from "@styled-system/patterns";
+import { recipes } from "@/styles/recipes";
+
+//data
+import { foodMenu } from "@/data/foodMenu";
 
 //components
 import Logo from "@/components/svg/Logo.astro";
@@ -12,40 +14,9 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 //images
 import { Image } from "astro:assets";
 import hyoutan_typography from "@/assets/hyoutan_typography.png";
-import AstroImage from "@/components/SakeSlide/AstroImage.astro";
-
-import { SAKE_SLIDE_IMGS } from "@/data/slides";
+import SakeSlide from "@/components/SakeSlide.astro";
 ---
 
-<script>
-  function init() {
-    const slider = document.querySelector("[data-slider]") as HTMLElement;
-    const slides = Array.from(slider.querySelectorAll("img"));
-
-    slides.forEach((slide) => {
-      const clone = slide.cloneNode(true);
-      slider.appendChild(clone);
-    });
-
-    const totalDuration = slides.length * 40000;
-
-    const keyframes = [
-      { transform: `translateX(0)` },
-      { transform: `translateX(-${slides.length * 100}%)` },
-    ];
-
-    const options = {
-      duration: totalDuration,
-      iterations: Infinity,
-      easing: "linear",
-    };
-
-    const animation = slider.animate(keyframes, options);
-
-    animation.play();
-  }
-  window.addEventListener("DOMContentLoaded", init);
-</script>
 <BaseLayout>
   <!-- heroview -->
   <section
@@ -65,48 +36,59 @@ import { SAKE_SLIDE_IMGS } from "@/data/slides";
 
   <!-- concept -->
   <section>
-    <h2
-      class={css({
-        fontWeight: "bold",
-        fontSize: { base: "x-large", lg: "xx-large" },
-      })}
-    >
+    <h2 class={recipes.heading2()}>
       全国から取り寄せた希少な日本酒と、うまい肴を楽しむ。
     </h2>
     <p>
       男が地蔵峠を通ると、お地蔵様の頭の上に雪が積もっていたので雪を払ってあげた。大晦日の夕方、町についた男はそこでかせ玉を売るが、一向に売れない。と、そこに笠売りのおじいさんがやってきた。笠売りのおじいさんもまったく笠が売れないので、二人はそれぞれの売り物を交換することにして家路についた。
     </p>
-    <div
-      class={css({
-        display: "flex",
-        justifyContent: "center",
-        margin: "0 auto",
-        gap: 4,
-        width: "100%",
-        overflow: "hidden",
-        height: "380px",
-      })}
-      data-slider-container
-    >
-      <div
-        class={css({
-          display: "flex",
-          transition: "transform 0.5s ease-in-out",
-          gap: 0,
-        })}
-        data-slider
-      >
-        {
-          SAKE_SLIDE_IMGS.map((img) => (
-            <AstroImage
-              imagePath={`/src/assets/sake_slide/${img.src}`}
-              altText="aaaa"
-              name="AstroImage"
-              data-slider-item
-            />
-          ))
-        }
+    <SakeSlide />
+    <p>
+      男が地蔵峠を通ると、お地蔵様の頭の上に雪が積もっていたので雪を払ってあげた。大晦日の夕方、町についた男はそこでかせ玉を売るが、一向に売れない。と、そこに笠売りのおじいさんがやってきた。笠売りのおじいさんもまったく笠が売れないので、二人はそれぞれの売り物を交換することにして家路についた。
+    </p>
+  </section>
+
+  <!-- menu -->
+  <section>
+    <h2 class={recipes.heading2()}>フードメニュー</h2>
+    <div>
+      <div>
+        <h3 class={recipes.heading3()}>串とん</h3>
+        <p>ひょうたん名物串とん！</p>
+        <p>全品税込み385円</p>
+        <ul
+          class={css({
+            display: "flex",
+            flexWrap: "wrap",
+          })}
+        >
+          {
+            foodMenu.kushiton.map((menu, index, array) => (
+              <li>
+                <h4>
+                  {menu.name}
+                  {index !== array.length - 1 ? "・" : ""}
+                </h4>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <div>
+        <h3 class={recipes.heading3()}>一品料理</h3>
+        <ul>
+          {
+            foodMenu.other.map((item) => (
+              <li>
+                <span>{item.name}</span>
+                <span>{item.price}円</span>
+              </li>
+            ))
+          }
+        </ul>
       </div>
     </div>
   </section>
+
+  <!-- access -->
 </BaseLayout>
